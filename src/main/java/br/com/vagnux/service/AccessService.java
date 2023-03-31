@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +46,7 @@ public class AccessService {
 		Optional<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
 
 		if (userAccess.isPresent()) {
-			if (userAccess.get().microservice.toString().equals(service.toString())) {
+			if (userAccess.get().getMicroservice().toString().equals(service.toString())) {
 				return true;
 			}
 		}
@@ -55,7 +54,7 @@ public class AccessService {
 		return response;
 	}
 
-	@SuppressWarnings("static-access")
+	
 	public List<String> aclList(String service, String username) {
 
 		List<UserRules> acl = userRepository.aclList(service, username);
@@ -75,5 +74,17 @@ public class AccessService {
 			return user.get().getId().toString();
 		}
 		return null;
+	}
+
+	public String getServicePort(String service, UserDetails userDetails) {
+		Optional<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
+		String port = "8080";
+		if (userAccess.isPresent()) {
+			String micro = userAccess.get().getMicroservice();
+			if (userAccess.get().getMicroservice().toString().equals(service.toString())) {
+				port = userAccess.get().getPort();
+			}
+		}
+		return port;
 	}
 }

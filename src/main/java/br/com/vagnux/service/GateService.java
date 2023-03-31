@@ -26,7 +26,7 @@ public class GateService {
 
 	private String service = "";
 	private String method = "get";
-	private String port = "7070";
+	private String port = "8080";
 	private Map<String, String> headers;
 	private List<String> uri = new ArrayList<String>();;
 	private byte[] dataPost;
@@ -81,28 +81,34 @@ public class GateService {
 
 	public ResponseEntity<String> send() {
 		try {
-			var url = "http://" + this.service + ":" + this.port;
-
-			for (String str : this.uri) {
-				if (!str.equals(this.service)) {
-					url = url + "/" + str;
-				}
-			}
-			this.uri.clear();
 
 			UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
 					.getPrincipal();
 
 			if (accessService.hasAccess(service, userDetails)) {
 
-				String[] denyWords = { "connection", "content-length", "host", "http2-settings", "upgrade", "user-agent" };
+				this.port = accessService.getServicePort(service, userDetails);
+
+				var url = "http://" + this.service + ":" + this.port;
+
+				for (String str : this.uri) {
+					if (!str.equals(this.service)) {
+						url = url + "/" + str;
+					}
+				}
+				this.uri.clear();
+
+				String[] denyWords = { "connection", "content-length", "host", "http2-settings", "upgrade",
+						"user-agent" };
 				List denyHeaders = Arrays.asList(denyWords);
 
 				Builder request1 = HttpRequest.newBuilder().uri(new URI(url));
 
 				for (Entry<String, String> entry : this.headers.entrySet()) {
-					if (!denyHeaders.contains(entry.getKey())) {
-						((Builder) request1).header(entry.getKey(), entry.getValue());
+					if (!entry.getKey().substring(0, 4).toUpperCase().equals("ACL_")) {
+						if (!denyHeaders.contains(entry.getKey())) {
+							((Builder) request1).header(entry.getKey(), entry.getValue());
+						}
 					}
 				}
 				((Builder) request1).header("Content-Type", "application/json");
@@ -110,7 +116,7 @@ public class GateService {
 				((Builder) request1).header("UID", accessService.getUid(userDetails.getUsername()));
 
 				List<String> aclList = accessService.aclList(service, userDetails.getUsername());
-				for (String access : aclList ) {
+				for (String access : aclList) {
 					((Builder) request1).header("ACL_" + access.toString(), access.toString());
 				}
 
@@ -129,7 +135,8 @@ public class GateService {
 				}
 
 				if (this.method.toString().equals("patch")) {
-					// Não tem metodo Patch estou usando o PUT mas isso não é algo bonito de fazer :(
+					// Não tem metodo Patch estou usando o PUT mas isso não é algo bonito de fazer
+					// :(
 					((Builder) request1).PUT(
 							HttpRequest.BodyPublishers.ofInputStream(() -> new ByteArrayInputStream(this.dataPost)));
 				}

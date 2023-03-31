@@ -15,6 +15,15 @@ public class RuleModel {
 	private Boolean isEnable = true;
 	private Boolean isPublic = false;
 	private String microservice;
+	private String httpPort;
+
+	public String getHttpPort() {
+		return httpPort;
+	}
+
+	public void setHttpPort(String httpPort) {
+		this.httpPort = httpPort;
+	}
 
 	public Boolean getIsPublic() {
 		return isPublic;
@@ -63,7 +72,7 @@ public class RuleModel {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, isEnable, isPublic, microservice, rule);
+		return Objects.hash(httpPort, id, isEnable, isPublic, microservice, rule);
 	}
 
 	@Override
@@ -75,9 +84,9 @@ public class RuleModel {
 		if (getClass() != obj.getClass())
 			return false;
 		RuleModel other = (RuleModel) obj;
-		return Objects.equals(id, other.id) && Objects.equals(isEnable, other.isEnable)
-				&& Objects.equals(isPublic, other.isPublic) && Objects.equals(microservice, other.microservice)
-				&& Objects.equals(rule, other.rule);
+		return Objects.equals(httpPort, other.httpPort) && Objects.equals(id, other.id)
+				&& Objects.equals(isEnable, other.isEnable) && Objects.equals(isPublic, other.isPublic)
+				&& Objects.equals(microservice, other.microservice) && Objects.equals(rule, other.rule);
 	}
 
 }

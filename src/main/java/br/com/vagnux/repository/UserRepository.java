@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<UserModel, String> {
 	
 	
 	
-	@Query(value = "select user_model.id as userId,  microservice from user_model \n"
+	@Query(value = "select user_model.id as userid,  microservice, http_port as port from user_model \n"
 			+ "join user_model_profile on user_model_profile.user_model_id = user_model.id\n"
 			+ "join profile_model on profile_model.id = user_model_profile.profile_id\n"
 			+ "join profile_model_rules on profile_model_rules.profile_model_id = profile_model.id\n"
