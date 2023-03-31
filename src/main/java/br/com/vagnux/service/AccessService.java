@@ -54,7 +54,6 @@ public class AccessService {
 		return response;
 	}
 
-	
 	public List<String> aclList(String service, String username) {
 
 		List<UserRules> acl = userRepository.aclList(service, username);
