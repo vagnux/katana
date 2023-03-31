@@ -129,6 +129,7 @@ public class GateService {
 				}
 
 				if (this.method.toString().equals("patch")) {
+					// Não tem metodo Patch estou usando o PUT mas isso não é algo bonito de fazer :(
 					((Builder) request1).PUT(
 							HttpRequest.BodyPublishers.ofInputStream(() -> new ByteArrayInputStream(this.dataPost)));
 				}
