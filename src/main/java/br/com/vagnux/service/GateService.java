@@ -150,7 +150,7 @@ public class GateService {
 				HttpClient httpClient = HttpClient.newHttpClient();
 				var response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-				return ResponseEntity.ok().body(response.body());
+				return ResponseEntity.status(response.statusCode()).body(response.body());
 			} else {
 				return ResponseEntity.status(401).body("{}");
 			}
