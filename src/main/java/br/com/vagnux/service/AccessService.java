@@ -35,18 +35,18 @@ public class AccessService {
 			return false;
 		}
 
-		Optional<RuleModel> servicePublic = ruleRepository.findPublic(service);
+		List<RuleModel> servicePublic = ruleRepository.findPublic(service);
 
-		if (servicePublic.isPresent() == true) {
-			if (servicePublic.get().getIsPublic() == true) {
+		if (servicePublic.size() > 0) {
+			if (servicePublic.get(0).getIsPublic() == true) {
 				return true;
 			}
 		}
 
-		Optional<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
+		List<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
 
-		if (userAccess.isPresent()) {
-			if (userAccess.get().getMicroservice().toString().equals(service.toString())) {
+		if (userAccess.size() > 0) {
+			if (userAccess.get(1).getMicroservice().toString().equals(service.toString())) {
 				return true;
 			}
 		}
@@ -76,12 +76,12 @@ public class AccessService {
 	}
 
 	public String getServicePort(String service, UserDetails userDetails) {
-		Optional<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
+		List<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
 		String port = "8080";
-		if (userAccess.isPresent()) {
-			String micro = userAccess.get().getMicroservice();
-			if (userAccess.get().getMicroservice().toString().equals(service.toString())) {
-				port = userAccess.get().getPort();
+		if (userAccess.size() > 0) {
+			UserAccess micro = userAccess.get(0);
+			if (userAccess.get(0).getMicroservice().toString().equals(service.toString())) {
+				port = userAccess.get(0).getPort();
 			}
 		}
 		return port;

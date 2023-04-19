@@ -1,6 +1,6 @@
 package br.com.vagnux.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ import br.com.vagnux.model.RuleModel;
 @Repository
 public interface RuleRepository extends JpaRepository<RuleModel, String> {
 
-	@Query(value = "SELECT rule_model.* FROM rule_model  where microservice = :service and is_Public = 1 limit 1", nativeQuery = true)
-	Optional<RuleModel> findPublic(@Param("service") String service);
+	@Query("SELECT r FROM RuleModel r where r.microservice = :service and r.isPublic = 1 GROUP BY r.microservice ")
+	List<RuleModel> findPublic(@Param("service") String service);
 
 }
