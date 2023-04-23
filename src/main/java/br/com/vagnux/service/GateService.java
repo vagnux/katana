@@ -27,6 +27,7 @@ public class GateService {
 	private String service = "";
 	private String method = "get";
 	private String port = "8080";
+	private String url;
 	private Map<String, String> headers;
 	private List<String> uri = new ArrayList<String>();;
 	private byte[] dataPost;
@@ -97,7 +98,7 @@ public class GateService {
 					}
 				}
 				this.uri.clear();
-
+				this.url = url;
 				String[] denyWords = { "connection", "content-length", "host", "http2-settings", "upgrade",
 						"user-agent" };
 				List denyHeaders = Arrays.asList(denyWords);
@@ -154,7 +155,10 @@ public class GateService {
 				return ResponseEntity.status(401).body("{}");
 			}
 		} catch (Exception ex) {
-			return ResponseEntity.status(500).body("{\"message\":\"" + ex.getMessage() + "\"}");
+			System.out.println("REQUEST ERROR:" + ex.getMessage());
+			System.out.println("REQUEST url:" + this.url);
+			return ResponseEntity.status(500)
+					.body("{\"message\":\"" + ex.getMessage() + "\",\"URI\":\"" + this.url + "\"}");
 		}
 	}
 

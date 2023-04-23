@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
 	private static Logger logger = LoggerFactory.getLogger(HelloController.class);
 
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<HashMap<String, Object>> geter(@RequestHeader Map<String, String> headers) throws Exception {
 		HashMap<String, Object> response = new HashMap<String, Object>();
 		for (var entry : headers.entrySet()) {
@@ -34,7 +34,7 @@ public class HelloController {
 		return ResponseEntity.status(200).body(response);
 	}
 
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<HashMap<String, Object>> recept(@RequestHeader Map<String, String> headers,
 			@RequestBody HashMap<String, Object> values) throws Exception {
 		HashMap<String, Object> response = new HashMap<String, Object>();
@@ -65,7 +65,7 @@ public class HelloController {
 	}
 	
 	
-	@PutMapping("/")
+	@PutMapping
 	public ResponseEntity<HashMap<String, Object>> putting(@RequestHeader Map<String, String> headers,
 			@RequestBody HashMap<String, Object> values) throws Exception {
 		HashMap<String, Object> response = new HashMap<String, Object>();
@@ -83,7 +83,7 @@ public class HelloController {
 	}
 	
 	
-	@PatchMapping("/")
+	@PatchMapping
 	public ResponseEntity<HashMap<String, Object>> patching(@RequestHeader Map<String, String> headers,
 			@RequestBody HashMap<String, Object> values) throws Exception {
 		HashMap<String, Object> response = new HashMap<String, Object>();

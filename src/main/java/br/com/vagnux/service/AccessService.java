@@ -46,7 +46,7 @@ public class AccessService {
 		List<UserAccess> userAccess = userRepository.hasAccess(service, userDetails.getUsername());
 
 		if (userAccess.size() > 0) {
-			if (userAccess.get(1).getMicroservice().toString().equals(service.toString())) {
+			if (userAccess.get(0).getMicroservice().toString().equals(service.toString())) {
 				return true;
 			}
 		}
