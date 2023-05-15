@@ -129,7 +129,7 @@ class KatanaApplicationTests {
 
 			HttpEntity<Map<String, String>> entity = new HttpEntity<>(request, headers);
 
-			ResponseEntity<String> loginResponse = restTemplate.postForEntity("/api/auth/login", entity, String.class);
+			ResponseEntity<String> loginResponse = restTemplate.postForEntity("/authenticate", entity, String.class);
 			assertEquals(HttpStatus.OK, loginResponse.getStatusCode());
 
 			String responseBody = loginResponse.getBody();

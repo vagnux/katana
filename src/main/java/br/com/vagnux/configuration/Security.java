@@ -64,7 +64,7 @@ public class Security {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/hello/free", "/api/auth/login", "/oauth/authorize");
+		return (web) -> web.ignoring().requestMatchers("/hello/free", "/authenticate", "/oauth/authorize");
 	}
 
 	@Bean

@@ -19,7 +19,7 @@ import br.com.vagnux.component.LoginRequest;
 import br.com.vagnux.configuration.JWTGenerator;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/authenticate")
 public class AuthController {
 
 	@Autowired
@@ -34,7 +34,7 @@ public class AuthController {
 		this.jwtGenerator = jwtGenerator;
 	}
 
-	@PostMapping("login")
+	@PostMapping
 	public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
 		try {
 			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
